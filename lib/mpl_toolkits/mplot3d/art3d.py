@@ -12,8 +12,8 @@ import math
 import numpy as np
 
 from matplotlib import (
-    _api, artist, cbook, colors as mcolors, lines, text as mtext,
-    path as mpath)
+    _api, artist, cbook, colors as mcolors, image as mimage,
+    lines, text as mtext, path as mpath)
 from matplotlib.collections import (
     LineCollection, PolyCollection, PatchCollection, PathCollection)
 from matplotlib.colors import Normalize
@@ -69,6 +69,34 @@ def get_dir_vector(zdir):
         return np.array(zdir)
     else:
         raise ValueError("'x', 'y', 'z', None or vector of length 3 expected")
+
+class AxesImage3D(mimage.AxesImage):
+    """
+
+    """
+    def __init__(self):
+        mimage.AxesImage.__init__(self, ax,
+                                 cmap=None,
+                                 norm=None,
+                                 interpolation=None,
+                                 origin=None,
+                                 extent=None,
+                                 filternorm=True,
+                                 filterrad=4.0,
+                                 resample=False,
+                                 interpolation_stage=None,
+                                 **kwargs)
+        self.set_3d_properties(z, zdir)
+
+    def set_3d_properties(self, z=0, zdir='z'):
+        self._z = z
+        self._dir_vec = get_dir_vector(zdir)
+        self.stale = True
+
+def axesImage_2d_to_3d(obj, z=0, zdir='z'):
+    """Convert a AxesImage to a AxesImage3D object."""
+    obj.__class__ = AxesImage3D
+    obj.set_3d_properties(z, zdir)
 
 
 class Text3D(mtext.Text):

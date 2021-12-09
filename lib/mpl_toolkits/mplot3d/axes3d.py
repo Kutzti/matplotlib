@@ -1492,6 +1492,14 @@ class Axes3D(Axes):
                              reverse=bool(self.zaxis_inverted())),
                       auto=None)
 
+    def imshow3d(self, X, z, zdir='z', **kwargs):
+        """
+
+        """
+        image = super().imshow(X, **kwargs)
+        art3d.axesImage_2d_to_3d(image, z, zdir)
+        return image
+
     def text(self, x, y, z, s, zdir=None, **kwargs):
         """
         Add text to the plot. kwargs will be passed on to Axes.text,

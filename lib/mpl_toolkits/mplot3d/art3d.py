@@ -74,23 +74,28 @@ class AxesImage3D(mimage.AxesImage):
     """
 
     """
-    def __init__(self):
-        mimage.AxesImage.__init__(self, ax,
-                                 cmap=None,
-                                 norm=None,
-                                 interpolation=None,
-                                 origin=None,
-                                 extent=None,
-                                 filternorm=True,
-                                 filterrad=4.0,
-                                 resample=False,
-                                 interpolation_stage=None,
-                                 **kwargs)
+    def __init__(self, img, z=0, zdir='z', **kwargs):
+        mimage.AxesImage.__init__(self, img, **kwargs)
         self.set_3d_properties(z, zdir)
+
+    def get_position_3d(self):
+        """Return the (x, y, z) position of the text."""
+        return self._x, self._y, self._z
 
     def set_3d_properties(self, z=0, zdir='z'):
         self._z = z
         self._dir_vec = get_dir_vector(zdir)
+        self.stale = True
+
+    def set_z(self, z):
+        """
+        Set the *z* position of the text.
+
+        Parameters
+        ----------
+        z : float
+        """
+        self._z = z
         self.stale = True
 
 def axesImage_2d_to_3d(obj, z=0, zdir='z'):

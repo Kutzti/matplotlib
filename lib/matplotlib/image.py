@@ -337,6 +337,7 @@ class _ImageBase(martist.Artist, cm.ScalarMappable):
         trans : Affine2D
             The affine transformation from image to pixel space.
         """
+        print("Test")
         if A is None:
             raise RuntimeError('You must first set the image '
                                'array or the image attribute')
